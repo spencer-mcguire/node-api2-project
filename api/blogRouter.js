@@ -49,7 +49,7 @@ router.post("/:id/comments", (req, res) => {
 // GET all blog posts
 
 router.get("/", (req, res) => {
-	db.find()
+	db.find(req.query)
 		.then(posts => {
 			res.status(200).json(posts);
 		})
