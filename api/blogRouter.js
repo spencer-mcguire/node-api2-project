@@ -25,6 +25,27 @@ router.post("/", (req, res) => {
 	}
 });
 
+// POST a comment on a post
+
+router.post("/:id/comments", (req, res) => {
+	if (!req.body.text) {
+		res
+			.status(400)
+			.json({ errorMessage: "Please provide text for the comment." });
+	} else {
+		Blogs.insertComment(req.body)
+			.then(comment => {
+				res.status(201).json(comment);
+			})
+			.catch(err => {
+				console.log(err);
+				res.status(500).json({
+					error: "There was an error while saving the comment to the database"
+				});
+			});
+	}
+});
+
 // GET blog posts
 router.get("/", (req, res) => {
 	Blogs.find()
