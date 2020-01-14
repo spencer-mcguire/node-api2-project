@@ -111,4 +111,30 @@ router.delete("/:id", (req, res) => {
 				});
 });
 
+// PUT update a post
+
+router.put("/:id", (req, res) => {
+	const { title, contents } = req.body;
+	if (!req.params.id) {
+		res
+			.status(404)
+			.json({ message: "The post with the specified ID does not exist." });
+	} else if (!title || !contents) {
+		res.status(400).json({
+			errorMessage: "Please provide title and contents for the post."
+		});
+	} else {
+		db.update(req.params.id, req.body)
+			.then(updated => {
+				res.status(200).json(updated);
+			})
+			.catch(err => {
+				console.log(err);
+				res
+					.status(500)
+					.json({ error: "The post information could not be modified." });
+			});
+	}
+});
+
 module.exports = router;
