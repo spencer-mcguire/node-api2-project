@@ -15,7 +15,7 @@ router.post("/", (req, res) => {
     });
   } else {
     db.insert(req.body)
-      .then(post => res.status(201).json(post))
+      .then(post => res.status(201).json({ post, title, contents }))
       .catch(err => {
         console.log(err);
         res.status(500).json({
