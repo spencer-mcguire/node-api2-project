@@ -80,4 +80,19 @@ router.get("/:id", (req, res) => {
 		});
 });
 
+// GET comments for a post
+
+router.get("/:id/comments", (req, res) => {
+	Blogs.findPostComments(req.params.id)
+		.then(comment => {
+			comment ? res.status(200).json(comment) : res.status(404);
+		})
+		.catch(err => {
+			console.log(err);
+			res
+				.status(500)
+				.json({ error: "The comments information could not be retrieved." });
+		});
+});
+
 module.exports = router;
