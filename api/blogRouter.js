@@ -15,7 +15,11 @@ router.post("/", (req, res) => {
 		});
 	} else {
 		db.insert(req.body)
-			.then(post => res.status(201).json({ title, contents }))
+			.then(post => {
+				db.findById(post.id).then(data => {
+					res.status(201).json(data);
+				});
+			})
 			.catch(err => {
 				console.log(err);
 				res.status(500).json({
@@ -87,7 +91,7 @@ router.get("/:id", (req, res) => {
 router.get("/:id/comments", (req, res) => {
 	db.findPostComments(req.params.id)
 		.then(comment => {
-			comment ? res.status(200).json(comment) : res.status(404);
+			comment.length ? res.status(200).json(comment) : res.status(404);
 		})
 		.catch(err => {
 			console.log(err);
